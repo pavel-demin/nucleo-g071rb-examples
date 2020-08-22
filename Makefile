@@ -7,13 +7,14 @@ OBJECTS = main.o startup.o
 vpath %.c common $(NAME)
 
 CC = arm-none-eabi-gcc
-LD = arm-none-eabi-ld
+LD = arm-none-eabi-gcc
 OBJCOPY = arm-none-eabi-objcopy
 
 CFLAGS = -Wall -Os -mthumb -march=armv6-m -mtune=cortex-m0plus \
   -fdata-sections -ffunction-sections -D$(PART) -ICMSIS
 
-LDFLAGS = --script script.ld --gc-sections
+LDFLAGS = -mthumb -march=armv6-m -mtune=cortex-m0plus \
+  -nostartfiles -Wl,--script,script.ld -Wl,--gc-sections
 
 all: $(NAME).bin
 
