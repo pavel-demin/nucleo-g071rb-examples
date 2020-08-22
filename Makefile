@@ -4,7 +4,7 @@ PART = STM32G071xx
 
 OBJECTS = main.o startup.o
 
-vpath %.c $(NAME)
+vpath %.c common $(NAME)
 
 CC = arm-none-eabi-gcc
 LD = arm-none-eabi-ld
