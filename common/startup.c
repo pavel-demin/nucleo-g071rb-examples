@@ -9,7 +9,7 @@ extern uint32_t _bss_end;
 
 extern int main();
 
-__attribute__ ((section (".reset_handler"))) void Reset_Handler()
+__attribute__((section(".reset_handler"))) void Reset_Handler()
 {
   uint32_t *dst, *src;
 
@@ -35,7 +35,7 @@ void Default_Handler()
 }
 
 #define DECLARE_HANDLER(name) \
-  extern void name() __attribute__ ((weak, alias ("Default_Handler")));
+  extern void name() __attribute__((weak, alias("Default_Handler")));
 
 DECLARE_HANDLER(NMI_Handler)
 DECLARE_HANDLER(HardFault_Handler)
@@ -74,7 +74,7 @@ DECLARE_HANDLER(USART2_IRQHandler)
 DECLARE_HANDLER(USART3_4_LPUART1_IRQHandler)
 DECLARE_HANDLER(CEC_IRQHandler)
 
-const void *vector_table[] __attribute__ ((section (".vector_table"))) =
+const void *vector_table[] __attribute__((section(".vector_table"), used)) =
 {
   &_stack_end,
   &Reset_Handler,
