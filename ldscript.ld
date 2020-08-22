@@ -15,10 +15,20 @@ SECTIONS {
     _text_start = .;
     KEEP(* (.vector_table))
     * (.text*)
+    . = ALIGN(4);
+  } >ram AT>flash
+
+  .rodata : {
+    . = ALIGN(4);
     * (.rodata*)
+    . = ALIGN(4);
+  } >ram AT>flash
+
+  .data : {
+    . = ALIGN(4);
     * (.data*)
     . = ALIGN(4);
-    _text_end = .;
+    _data_end = .;
   } >ram AT>flash
 
   .reset_handler : {

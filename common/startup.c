@@ -3,7 +3,7 @@
 extern uint32_t _stack_end;
 extern uint32_t _flash_start;
 extern uint32_t _text_start;
-extern uint32_t _text_end;
+extern uint32_t _data_end;
 extern uint32_t _bss_start;
 extern uint32_t _bss_end;
 
@@ -16,7 +16,7 @@ __attribute__((section(".reset_handler"))) void Reset_Handler()
   // copy .text section to RAM
   dst = &_text_start;
   src = &_flash_start;
-  while(dst < &_text_end) *dst++ = *src++;
+  while(dst < &_data_end) *dst++ = *src++;
 
   // fill .bss section with zeros
   dst = &_bss_start;
