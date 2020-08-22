@@ -14,7 +14,7 @@ CFLAGS = -Wall -Os -mthumb -march=armv6-m -mtune=cortex-m0plus \
   -fdata-sections -ffunction-sections -D$(PART) -ICMSIS
 
 LDFLAGS = -mthumb -march=armv6-m -mtune=cortex-m0plus \
-  -nostartfiles -Wl,--script,script.ld -Wl,--gc-sections
+  -nostartfiles -Wl,--script,ldscript.ld -Wl,--gc-sections
 
 all: $(NAME).bin
 
