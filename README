@@ -1,0 +1,23 @@
+Installing GCC:
+
+  sudo apt-get install gcc-arm-none-eabi
+
+Installing required packages:
+
+  sudo apt-get install git make automake libtool libusb-1.0-0-dev python3-pip
+
+Installing OpenOCD:
+
+  source helpers/install_openocd.sh
+
+  export PATH=$PATH:/opt/openocd/bin
+
+  echo PATH=\$PATH:/opt/openocd/bin >> ~/.profile
+
+Installing Adafruit-PureIO:
+
+  python3 -m pip install --user Adafruit-PureIO
+
+Compiling and running program on NUCLEO-G071RB:
+
+  make NAME=led_blinker install
