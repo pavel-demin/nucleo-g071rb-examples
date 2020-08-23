@@ -50,8 +50,8 @@ const uint8_t map[83] =
 void output()
 {
   int32_t i, tx, lpf, ptt;
-  uint32_t code[3] = {0}, data[3] = {0};
-  uint16_t bits[6] = {0};
+  uint32_t code[3], data[3];
+  uint16_t bits[6];
 
   tx = i2c_buffer[0] & 0x1;
   ptt = (i2c_buffer[0] >> 1) & 0x1;
@@ -81,6 +81,11 @@ void output()
   data[2] |= (ptt && tx == 0) << 16;
   data[2] |= (ptt && tx == 1) << 17;
   data[2] |= ptt << 18;
+
+  for(i = 0; i < 6; ++i)
+  {
+    bits[i] = 0;
+  }
 
   for(i = 0; i < 83; ++i)
   {
