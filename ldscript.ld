@@ -28,7 +28,7 @@ SECTIONS {
     . = ALIGN(4);
     * (.data*)
     . = ALIGN(4);
-    _data_end = .;
+    _sram_data_end = .;
   } >sram AT>flash
 
   .reset_handler : {
