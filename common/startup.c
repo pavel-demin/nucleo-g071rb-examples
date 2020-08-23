@@ -2,7 +2,7 @@
 
 extern uint32_t _stack_end;
 extern uint32_t _flash_start;
-extern uint32_t _text_start;
+extern uint32_t _sram_start;
 extern uint32_t _data_end;
 extern uint32_t _bss_start;
 extern uint32_t _bss_end;
@@ -14,7 +14,7 @@ __attribute__((section(".reset_handler"))) void Reset_Handler()
   uint32_t *dst, *src;
 
   // copy .text section to RAM
-  dst = &_text_start;
+  dst = &_sram_start;
   src = &_flash_start;
   while(dst < &_data_end) *dst++ = *src++;
 
@@ -23,7 +23,7 @@ __attribute__((section(".reset_handler"))) void Reset_Handler()
   while(dst < &_bss_end) *dst++ = 0;
 
   // set vector table location
-  SCB->VTOR = (uint32_t)&_text_start;
+  SCB->VTOR = (uint32_t)&_sram_start;
 
   // call main
   main();

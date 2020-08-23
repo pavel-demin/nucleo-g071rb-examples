@@ -1,6 +1,7 @@
 ENTRY(Reset_Handler)
 
 _flash_start = ORIGIN(flash);
+_sram_start = ORIGIN(sram);
 
 _stack_end = ORIGIN(sram) + LENGTH(sram);
 
@@ -12,7 +13,6 @@ MEMORY {
 SECTIONS {
   .text : {
     . = ALIGN(4);
-    _text_start = .;
     KEEP(* (.vector_table))
     * (.text*)
     . = ALIGN(4);
