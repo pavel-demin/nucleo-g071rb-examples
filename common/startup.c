@@ -27,6 +27,8 @@ __attribute__((section(".reset_handler"))) void Reset_Handler()
 
   // call main
   main();
+
+  while(1);
 }
 
 void Default_Handler()
