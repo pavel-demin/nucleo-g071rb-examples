@@ -7,46 +7,6 @@ uint16_t spi_buffer[5] = {0};
 
 uint8_t ready = 0;
 
-const uint8_t map[83] =
-{
-  // Control Outputs (13, 14, 15, 16, 17, 18, 19)
-  0x13, 0x14, 0x15, 0x16, 0x17, 0x18, 0x19,
-  // Dither, Random (2C, 2D)
-  0x2C, 0x2D,
-  // RX Antenna (29, 2A, 2B)
-  0x29, 0x2A, 0x2B,
-  // TX Antenna (1A, 1B, 1C)
-  0x1A, 0x1C, 0x1C,
-  // Bypass all HPFs (2E)
-  0x2E,
-  // 6m low noise amplifier (2F)
-  0x2F,
-  // Disable T/R relay (32)
-  0x32,
-  // ATT1 (PB0, PB14, PB4, PB5, PB3)
-  0x50, 0x5E, 0x54, 0x55, 0x53,
-  // ATT2 (PB2, PB6, PB15, PB10, PB13)
-  0x52, 0x56, 0x5F, 0x5A, 0x5D,
-  // BCD code for RX1 band (34, 35, 36, 37)
-  0x34, 0x35, 0x36, 0x37,
-  // BCD code for RX2 band (38, 39, 3A, 3B)
-  0x38, 0x39, 0x3A, 0x3B,
-  // BPF TX (3C, 3D, 3E, 3F, 40, 41, 42, 43, 44, 45, 46, 47)
-  0x3C, 0x3D, 0x3E, 0x3F, 0x40, 0x41, 0x42, 0x43, 0x44, 0x45, 0x46, 0x47,
-  // BPF RX1 (00, 01, 02, 03, 04, 05, 06, 07, 08, 09, 0A, 0B)
-  0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09, 0x0A, 0x0B,
-  // BPF RX2 (1D, 1E, 1F, 20, 21, 22, 23, 24, 25, 26, 27, 28)
-  0x1D, 0x1E, 0x1F, 0x20, 0x21, 0x22, 0x23, 0x24, 0x25, 0x26, 0x27, 0x28,
-  // LPF TX (0C, 0D, 0E, 0F, 10, 11, 12)
-  0x0C, 0x0D, 0x0E, 0x0F, 0x10, 0x11, 0x12,
-  // TX band != RX1 band (33)
-  0x33,
-  // Relays (30, 31)
-  0x30, 0x31,
-  // PTT (48)
-  0x48
-};
-
 void output()
 {
   int32_t i, tx, lpf, ptt;
@@ -82,15 +42,12 @@ void output()
   data[2] |= (ptt && tx == 1) << 17;
   data[2] |= ptt << 18;
 
-  for(i = 0; i < 6; ++i)
-  {
-    bits[i] = 0;
-  }
-
-  for(i = 0; i < 83; ++i)
-  {
-    bits[map[i] >> 4] |= (data[i >> 5] >> (i & 0x1F) & 1) << (map[i] & 0xF);
-  }
+  bits[0] = ((data[1] >> 16) & 0x0fff) | ((data[2] << 4) & 0xf000);
+  bits[1] = ((data[0] << 3) & 0x03f8) | ((data[0] >> 2) & 0x1c00) | ((data[1] >> 15) & 0xe000) | ((data[2] >> 12) & 0x0007);
+  bits[2] = ((data[0] << 5) & 0x3000) | ((data[0] >> 0) & 0x0e00) | ((data[0] >> 1) & 0xc000) | ((data[1] >> 31) & 0x0001) | ((data[2] << 1) & 0x01fe);
+  bits[3] = ((data[0] >> 15) & 0x0004) | ((data[0] >> 24) & 0x00f0) | ((data[1] << 8) & 0xff00) | ((data[2] >> 12) & 0x0008) | ((data[2] >> 16) & 0x0003);
+  bits[4] = ((data[1] >> 8) & 0x00ff) | ((data[2] >> 10) & 0x0100);
+  bits[5] = ((data[0] >> 5) & 0x4000) | ((data[0] >> 10) & 0x8000) | ((data[0] >> 14) & 0x2000) | ((data[0] >> 16) & 0x0030) | ((data[0] >> 16) & 0x0400) | ((data[0] >> 18) & 0x0001) | ((data[0] >> 18) & 0x0040) | ((data[0] >> 19) & 0x0008) | ((data[0] >> 21) & 0x0004);
 
   for(i = 0; i < 5; ++i)
   {
