@@ -39,7 +39,7 @@ void output()
   data[1] |= 1 << (code[2] + 28);
 
   data[2] = (code[2] > 3) ? 1 << (code[2] - 4) : 0;
-  data[2] |= lpf << 8;
+  data[2] |= 1 << (lpf + 8);
   data[2] |= tx << 15;
   data[2] |= (ptt && tx == 0) << 16;
   data[2] |= (ptt && tx == 1) << 17;
