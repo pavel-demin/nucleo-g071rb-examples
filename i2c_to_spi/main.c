@@ -9,7 +9,8 @@ uint8_t ready = 0;
 
 void output()
 {
-  int32_t i, tx, lpf, ptt;
+  int32_t i;
+  uint32_t tx, lpf, ptt;
   uint32_t code[3], data[3];
   uint16_t bits[6];
   uint8_t att[2];
@@ -149,6 +150,9 @@ int main()
   SPI1->CR2 |= SPI_CR2_DS_3 | SPI_CR2_TXDMAEN_Msk;
   // enable SPI1
   SPI1->CR1 |= SPI_CR1_SPE_Msk;
+
+  i2c_buffer[0] = 0x02100000;
+  output();
 
   // enable Stop 1 mode
   PWR->CR1 |= PWR_CR1_LPMS_0;
