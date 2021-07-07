@@ -34,7 +34,9 @@ map = [
   # Relays (30, 31)
   0x30, 0x31,
   # PTT (48)
-  0x48]
+  0x48,
+  # Preamps (49, 4A)
+  0x49, 0x4A]
 
 result = []
 
