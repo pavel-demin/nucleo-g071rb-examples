@@ -3,9 +3,9 @@ map = [
   0x13, 0x14, 0x15, 0x16, 0x17, 0x18, 0x19,
   # Dither, Random (2C, 2D)
   0x2C, 0x2D,
-  # RX Antenna (29, 2A, 2B)
+  # Antenna RX1 (29, 2A, 2B)
   0x29, 0x2A, 0x2B,
-  # TX Antenna (1A, 1B, 1C)
+  # Antenna TX (1A, 1B, 1C)
   0x1A, 0x1B, 0x1C,
   # Bypass all HPFs (2E)
   0x2E,
@@ -36,7 +36,9 @@ map = [
   # PTT (48)
   0x48,
   # Preamps (49, 4A)
-  0x49, 0x4A]
+  0x49, 0x4A,
+  # Antenna RX2 (4B, 4C)
+  0x4B, 0x4C]
 
 result = []
 

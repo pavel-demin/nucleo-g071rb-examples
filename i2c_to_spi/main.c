@@ -8,17 +8,19 @@ uint16_t spi_buffer[5] = {0};
 uint8_t ready = 0;
 
 const uint32_t bcd[12] = {15, 1, 2, 0, 3, 4, 5, 6, 7, 8, 9, 10};
+const uint32_t ant[16] = {0, 0, 0, 0, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 1};
 
 void output()
 {
   int32_t i;
-  uint32_t tx, lpf, ptt;
+  uint32_t tx, lpf, ptt, misc;
   uint32_t code[3], data[3];
   uint16_t bits[6];
   uint8_t att[2];
 
   tx = i2c_buffer[0] & 0x1;
   ptt = (i2c_buffer[0] >> 1) & 0x1;
+  misc = ((i2c_buffer[0] >> 7) & 0xC) | (i2c_buffer[0] & 0x3);
   att[0] = i2c_buffer[0] >> 20 & 0x1F;
   att[1] = i2c_buffer[0] >> 25 & 0x1F;
 
@@ -49,12 +51,13 @@ void output()
   data[2] |= ptt << 18;
   data[2] |= (att[0] == 0) << 19;
   data[2] |= (att[1] == 0) << 20;
+  data[2] |= ant[misc] << 21;
 
   bits[0] = ((data[1] >> 16) & 0x0fff) | ((data[2] << 4) & 0xf000);
   bits[1] = ((data[0] << 3) & 0x03f8) | ((data[0] >> 2) & 0x1c00) | ((data[1] >> 15) & 0xe000) | ((data[2] >> 12) & 0x0007);
   bits[2] = ((data[0] << 5) & 0x3000) | ((data[0] >> 0) & 0x0e00) | ((data[0] >> 1) & 0xc000) | ((data[1] >> 31) & 0x0001) | ((data[2] << 1) & 0x01fe);
   bits[3] = ((data[0] >> 15) & 0x0004) | ((data[0] >> 24) & 0x00f0) | ((data[1] << 8) & 0xff00) | ((data[2] >> 12) & 0x0008) | ((data[2] >> 16) & 0x0003);
-  bits[4] = ((data[1] >> 8) & 0x00ff) | ((data[2] >> 10) & 0x0700);
+  bits[4] = ((data[1] >> 8) & 0x00ff) | ((data[2] >> 10) & 0x1f00);
   bits[5] = ((data[0] >> 5) & 0x4000) | ((data[0] >> 10) & 0x8000) | ((data[0] >> 14) & 0x2000) | ((data[0] >> 16) & 0x0030) | ((data[0] >> 16) & 0x0400) | ((data[0] >> 18) & 0x0001) | ((data[0] >> 18) & 0x0040) | ((data[0] >> 19) & 0x0008) | ((data[0] >> 21) & 0x0004);
 
   for(i = 0; i < 5; ++i)
